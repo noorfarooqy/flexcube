@@ -1,0 +1,15 @@
+{
+  "resources/js/app.js": {
+    "file": "assets/app-6bb05423.js",
+    "isEntry": true,
+    "src": "resources/js/app.js"
+  },
+  "resources/js/login.js": {
+    "file": "assets/login-3ec3d0fe.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/login.js"
+  }
+}

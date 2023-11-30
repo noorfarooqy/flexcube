@@ -1,0 +1,25 @@
+{
+    "name": "noorfarooqy/flexcube",
+    "description": "Flexcube Integration with Laravel",
+    "type": "library",
+    "require": {
+        "laravel/laravel": "^10.2",
+        "noorfarooqy/noorauth": "^1.0",
+        "artisaninweb/laravel-soap": "0.3.0.10"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Noorfarooqy\\Flexcube\\": "src/",
+            "Noorfarooqy\\Flexcube\\Services\\": "src/Services",
+            "Noorfarooqy\\Flexcube\\Helpers\\": "src/Helpers"
+        }
+    },
+    "authors": [
+        {
+            "name": "noorfarooqy",
+            "email": "noor@drongo.vip"
+        }
+    ],
+    "minimum-stability": "stable"
+}
