@@ -132,7 +132,7 @@ trait HasFlexcubeBankingSystem
         $soapServices->SetBody($request_body);
         $branch = config('flexcube.branch');
         $source = config('flexcube.source');
-        $ubscamp = config('flexcube.source');
+        $ubscamp = config('flexcube.ubscamp');
         $userid = $this->user_id;
 
         ini_set('default_socket_timeout', 5000);
