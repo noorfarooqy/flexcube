@@ -12,7 +12,7 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
     public function AccountDetails($account, $branch = null)
     {
         Log::info($account);
-        return $this->QueryCustomerAccountDetails([
+        return $this->QueryIACustAccount([
             'Cust-Account-IO' => [
                 'BRN' => $branch == null ? substr($account, 0, 3) : $branch,
                 'ACC' => $account,
