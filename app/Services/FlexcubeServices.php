@@ -2,198 +2,151 @@
 
 namespace Noorfarooqy\Flexcube\Services;
 
-use Artisaninweb\SoapWrapper\SoapWrapper;
-use Illuminate\Support\Facades\Log;
-use Noorfarooqy\Flexcube\Helpers\ErrorCodes;
 use Noorfarooqy\NoorAuth\Services\NoorServices;
 
-class FlexcubeServices extends NoorServices
+class FlexcubeServices extends NoorServices implements CoreBankingContract
 {
 
-
-    public $user_id;
-
-    public function __construct()
+    use HasFlexcubeBankingSystem;
+    public function AccountDetails($account, $branch = null)
     {
-        $this->user_id  = config('flexcube.user_id');
-    }
-    public function FetchCustomerDataFromCbs($account_number, $branch_code)
-    {
-        if (is_null($account_number)) {
-            $this->setError("Customer account number is required");
-            return false;
-        }
-
-        $request_body = [
+        return $this->AccountDetails([
             'Cust-Account-IO' => [
-                'BRN' => $branch_code,
-                'ACC' => $account_number,
+                'BRN' => $branch == null ? substr($account, 0, 3) : $branch,
+                'ACC' => $account,
             ],
-        ];
-        $service = 'FCUBSIAService';
-        $operation = 'QueryIACustAcc';
-        $operation_query = 'FCUBSIAService.QueryIACustAccIO';
-        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
-        if ($response) {
-            return $response->{'Cust-Account-Full'};
-        }
-        return false;
+        ]);
     }
-
-    public function GetCustomerBalanceFromCbs($account_number, $branch_code)
+    public function AccountIsDormant($account, $branch = null)
     {
-        if (is_null($account_number)) {
-            $this->setError("Customer account number is required");
-            return false;
-        }
+        $account_details = $this->AccountDetails($account, $branch);
+        if (!$account_details) return -1;
 
-        $request_body = [
+        return $account_details?->{'Summary'}?->{'DORM'} == 'Y';
+    }
+    public function AccountIsNoDebit($account, $branch = null)
+    {
+        $account_details = $this->AccountDetails($account, $branch);
+
+        return $account_details?->{'ACSTATNODR'} == 'Y';
+    }
+    public function AccountIsNoCredit($account, $branch = null)
+    {
+        $account_details = $this->AccountDetails($account, $branch);
+        return $account_details?->{'ACSTATNOCR'} == 'Y';
+    }
+    public function AccountBelongsToStaff($account, $branch = null)
+    {
+        $account_details = $this->AccountDetails($account, $branch);
+        return $account_details?->{'ACCTYPE'} == 'S';
+    }
+    public function AccountIsFrozen($account, $branch = null)
+    {
+        $account_details = $this->AccountDetails($account, $branch);
+        return $account_details?->{'FROZEN'} == 'Y';
+    }
+    public function AccountIsIndividualCurrent($account, $branch = null)
+    {
+        $account_details = $this->AccountDetails($account, $branch);
+        return $account_details?->{'ACCLS'} == 'ICUR';
+    }
+    public function AccountIsIndividualSaving($account, $branch = null)
+    {
+        $account_details = $this->AccountDetails($account, $branch);
+        return $account_details?->{'ACCLS'} == 'ISAV';
+    }
+    public function AccountBalance($account, $branch = null)
+    {
+        return $this->QueryAccountBalance([
             'ACC-Balance' => [
                 'ACC_BAL' => [
-                    'BRANCH_CODE' => $branch_code,
-                    'CUST_AC_NO' => $account_number,
+                    'BRANCH_CODE' => $branch == null ? substr($account, 0, 3) : $branch,
+                    'CUST_AC_NO' => $account,
                 ],
             ],
+        ]);
+    }
+    public function AccountTransaction($amount, $product, $origin, $offset = null)
+    {
+        $request = [
+            'XREF' => $this->GenerateReference($product),
+            'PRD' => $product,
+            'BRN' => $origin['branch'] == null ? substr($origin['account'], 0, 3) : $origin['branch'],
+            'TXNBRN' => $origin['branch'] == null ? substr($origin['account'], 0, 3) : $origin['branch'],
+            'TXNACC' => $origin['account'],
+            'TXNCCY' => $origin['ccy'],
+            'TXNAMT' => $amount,
         ];
-        $service = 'FCUBSAccService';
-        $operation = 'QueryAccBal';
-        $operation_query = 'FCUBSAccService.QueryAccBalIO';
-        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
-        if ($response) {
-            return $response->{'ACC-Balance'}?->{'ACC_BAL'};
+        if ($offset) {
+            $request['OFFSETBRN'] = $offset['offset_branch'];
+            $request['OFFSETACC'] = $offset['offset_account'];
+            $request['OFFSETCCY'] = $offset['offset_ccy'];
         }
-        return false;
+        $request['OFFSETAMT'] = $amount;
+        return $this->CreateTransaction([
+            'Transaction-Details' => $request,
+        ]);
+    }
+    public function AccountQueryTransaction($reference)
+    {
+        return $this->QueryAccountTransactions([
+            'Transaction-Details-IO' => [
+                'FCCREF' => $reference
+            ]
+        ]);
+    }
+    public function AccountReverseTransaction($reference)
+    {
+        return $this->ReverseTransaction([
+            'Transaction-Details-IO' => [
+                'FCCREF' => $reference,
+            ],
+        ]);
+    }
+    public function AccountMinistatement($account, $branch = null)
+    {
+        return $this->QueryAccountTransactions([
+            'Acc-Details-IO' => [
+                'NUMOFTRN' => 5,
+                'ACCNO' => $account,
+                'ACCBRN' => $branch == null ? substr($account, 0, 3) : $branch,
+            ],
+        ]);
     }
 
-    public function CreateTransaction($request_body)
+    public function CustomerDetails($customer_cif)
     {
-        $service = 'FCUBSRTService';
-        $operation = 'CreateTransaction';
-        $operation_query = 'FCUBSRTService.CreateTransactionFS';
-        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
-        if ($response) {
-            return $response->{'Transaction-Details'};
-        }
-        return false;
+        return $this->QueryCustomerDetails([
+            'Stvws-Stdcifqy-Query-IO' => [
+                'KEY_ID' => 'C',
+                'VALUE' => $customer_cif,
+            ],
+        ]);
+    }
+    public function CustomerAccounts($customer_cif)
+    {
+        return $this->QueryCustomerAccountDetails([
+            'Sttms-Customer-IO' => [
+                'CUSTNO' => $customer_cif
+            ],
+        ]);
     }
 
-    public function ReverseTransaction($request_body)
+    public function ExchangeRate($from, $to, $branch = '000')
     {
-        $service = 'FCUBSRTService';
-        $operation = 'ReverseTransaction';
-        $operation_query = 'FCUBSRTService.ReverseTransactionIO';
-        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
-        if ($response) {
-            return $response->{'FCUBS_WARNING_RESP'};
-        }
-        return false;
+        return $this->QueryExchangeRate([
+            'Ccy-Rate-Master-IO' => [
+                'BRNCD' => $branch,
+                'CCY1' => $from,
+                'CCY2' => $to
+            ]
+        ]);
     }
 
-    public function GetCustomerMS($request_body)
+    public function GenerateReference($prefix = 'LFC')
     {
-        $service = 'FCUBSACService';
-        $operation = 'QueryAccTrns';
-        $operation_query = 'FCUBSACService.QueryAccTrnsIO';
-        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
-        if ($response) {
-            return $response->{'Acc-Details-Full'};
-        }
-        return false;
-    }
-
-    public function GetCustomerByCif($request_body)
-    {
-        $service = 'FCUBSCustomerService';
-        $operation = 'QueryCustomer';
-        $operation_query = 'FCUBSCustomerService.QueryCustomerIO';
-        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
-        if ($response) {
-            return $response->{'Customer-Full'};
-        }
-        return false;
-    }
-
-    public function GetCustomerByCifDetail($request_body)
-    {
-        $service = 'FCUBSCustomerService';
-        $operation = 'QueryCustomerDetails';
-        $operation_query = 'FCUBSCustomerService.QueryCustomerDetailsIO';
-        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
-        if ($response) {
-            return $response->{'Stvws-Stdcifqy-Query-Full'};
-        }
-        return false;
-    }
-
-    public function QueryCustomerAccounts($request_body)
-    {
-        $service = 'FCUBSCustomerService';
-        $operation = 'QueryCustAccDetail';
-        $operation_query = 'FCUBSCustomerService.QueryCustAccDetailIO';
-        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
-        if ($response) {
-            return $response->{'Sttms-Customer-Full'};
-        }
-        return false;
-    }
-
-
-    public function QueryCcyRate($request_body)
-    {
-        $service = 'FCUBSCcyService';
-        $operation = 'QueryCYDRATEE';
-        $operation_query = 'FCUBSCcyService.QueryCYDRATEEIO';
-        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
-        if ($response) {
-            return $response->{'Ccy-Rate-Master-Full'};
-        }
-        return false;
-    }
-    public function QueryCbs($request_body, $service, $operation, $operation_query)
-    {
-        $soapServices = new SoapServices();
-        $soapServices->SetBody($request_body);
-        $branch = config('flexcube.branch');
-        $source = config('flexcube.source');
-        $ubscamp = config('flexcube.source');
-        $userid = $this->user_id;
-
-        ini_set('default_socket_timeout', 5000);
-        $soapServices->SetHeader($service, $operation, $branch, $source, $ubscamp, $userid);
-        $soapServices->SetRequest();
-        $data = $soapServices->GetRequestData();
-        $soapWrapper = new SoapWrapper();
-        $url = config('flexcube.fcc_endpoint');
-        $service_url = $url . $service . "/" . $service . "?WSDL";
-        $soapWrapper->add($service, function ($service) use ($service_url) {
-            $service->wsdl($service_url)
-                ->trace(true)
-                ->classmap(
-                    // [
-                    //     CustomerAccRequest::class,
-                    //     CustomerAccReponse::class,
-                    // ]
-                );
-        });
-
-        $response = $soapWrapper->call($operation_query, $data);
-
-        $failed = $response->FCUBS_HEADER->MSGSTAT != "SUCCESS";
-        if (env('APP_DEBUG')) {
-            Log::channel('debug')->info(json_encode($response));
-        }
-
-        // return $failed;
-        if ($failed) {
-            $errors = $response->FCUBS_BODY?->FCUBS_ERROR_RESP?->ERROR ?? '';
-            if (env('APP_DEBUG')) {
-                // LogCbsFailsJob::dispatch($request_body, json_encode($errors));
-                Log::channel('debug')->info(json_encode($errors));
-            }
-            $default_error = 'Request to the CBS Failed. Please contact admin for assistance';
-            $this->setError(is_array($errors) ? (count($errors) > 0 ? $errors[1]?->EDESC ?? $default_error : $default_error) : $errors?->{'EDESC'}, ErrorCodes::DEFAULT_ERROR->value);
-            return false;
-        }
-        return $response->FCUBS_BODY;
+        $transactions = gmdate('YmdHis', time());
+        $reference =  $prefix . (config('flexcube.reference_salt', 100000000) + $transactions);
+        return $reference;
     }
 }
