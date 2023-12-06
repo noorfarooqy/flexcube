@@ -11,8 +11,8 @@
     "autoload": {
         "psr-4": {
             "Noorfarooqy\\Flexcube\\": "src/",
-            "Noorfarooqy\\Flexcube\\Services\\": "src/Services",
-            "Noorfarooqy\\Flexcube\\Helpers\\": "src/Helpers"
+            "Noorfarooqy\\Flexcube\\Services\\": "app/Services",
+            "Noorfarooqy\\Flexcube\\Helpers\\": "app/Helpers"
         }
     },
     "authors": [
