@@ -157,7 +157,7 @@ trait HasFlexcubeBankingSystem
 
         $failed = $response?->FCUBS_HEADER?->MSGSTAT != "SUCCESS";
         if (env('APP_DEBUG')) {
-            Log::channel('debug')->info(json_encode($response));
+            Log::info(json_encode($response));
         }
 
         // return $failed;
@@ -165,7 +165,7 @@ trait HasFlexcubeBankingSystem
             $errors = $response->FCUBS_BODY?->FCUBS_ERROR_RESP?->ERROR ?? '';
             if (env('APP_DEBUG')) {
                 // LogCbsFailsJob::dispatch($request_body, json_encode($errors));
-                Log::channel('debug')->info(json_encode($errors));
+                Log::info(json_encode($errors));
             }
             $default_error = 'Request to the CBS Failed. Please contact admin for assistance';
             $this->setError(is_array($errors) ? (count($errors) > 0 ? $errors[1]?->EDESC ?? $default_error : $default_error) : $errors?->{'EDESC'}, ErrorCodes::DEFAULT_ERROR->value);
