@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Noorfarooqy\Flexcube\Helpers\ErrorCodes;
 use Noorfarooqy\NoorAuth\Services\NoorServices;
 
-Trait HasFlexcubeBankingSystem 
+trait HasFlexcubeBankingSystem
 {
 
 
@@ -146,10 +146,10 @@ Trait HasFlexcubeBankingSystem
             $service->wsdl($service_url)
                 ->trace(true)
                 ->classmap(
-                    // [
-                    //     CustomerAccRequest::class,
-                    //     CustomerAccReponse::class,
-                    // ]
+                    [
+                        //     CustomerAccRequest::class,
+                        //     CustomerAccReponse::class,
+                    ]
                 );
         });
 
