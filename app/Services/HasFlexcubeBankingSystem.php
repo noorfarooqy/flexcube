@@ -155,7 +155,7 @@ trait HasFlexcubeBankingSystem
 
         $response = $soapWrapper->call($operation_query, $data);
 
-        $failed = $response->FCUBS_HEADER->MSGSTAT != "SUCCESS";
+        $failed = $response?->FCUBS_HEADER?->MSGSTAT != "SUCCESS";
         if (env('APP_DEBUG')) {
             Log::channel('debug')->info(json_encode($response));
         }
