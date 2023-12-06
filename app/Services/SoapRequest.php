@@ -1,7 +1,7 @@
 <?php
 namespace Noorfarooqy\Flexcube\Services;
 
-class SoapRequest
+class SoapRequest extends SoapServices
 {
     /*
     * @var Array
