@@ -140,7 +140,7 @@ trait HasFlexcubeBankingSystem
         $soapServices->SetRequest();
         $data = $soapServices->GetRequestData();
         $soapWrapper = new SoapWrapper();
-        $url = config('flexcube.fcc_endpoint');
+        $url = config('flexcube.endpoint');
         $service_url = $url . $service . "/" . $service . "?WSDL";
         $soapWrapper->add($service, function ($service) use ($service_url) {
             $service->wsdl($service_url)
