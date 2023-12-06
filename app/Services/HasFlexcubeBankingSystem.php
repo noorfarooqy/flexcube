@@ -148,7 +148,7 @@ trait HasFlexcubeBankingSystem
                 ->classmap(
                     [
                         SoapServices::class,
-                        //     CustomerAccReponse::class,
+                        CustomerAccReponse::class,
                     ]
                 );
         });
