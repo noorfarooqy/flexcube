@@ -162,7 +162,7 @@ trait HasFlexcubeBankingSystem
 
         // return $failed;
         if ($failed) {
-            $errors = $response->FCUBS_BODY?->FCUBS_ERROR_RESP?->ERROR ?? '';
+            $errors = $response->FCUBS_BODY?->FCUBS_ERROR_RESP?->ERROR ?? null;
             if (env('APP_DEBUG')) {
                 // LogCbsFailsJob::dispatch($request_body, json_encode($errors));
                 Log::info(json_encode($errors));
