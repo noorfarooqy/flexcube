@@ -21,5 +21,12 @@
             "email": "noor@drongo.vip"
         }
     ],
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Noorfarooqy\\Flexcube\\FlexcubeServiceProvider"
+            ]
+        }
+    }
 }
