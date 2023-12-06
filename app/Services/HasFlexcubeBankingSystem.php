@@ -168,7 +168,7 @@ trait HasFlexcubeBankingSystem
                 Log::info(json_encode($errors));
             }
             $default_error = 'Request to the CBS Failed. Please contact admin for assistance';
-            $this->setError(is_array($errors) ? (count($errors) > 0 ? $errors[1]?->EDESC ?? $default_error : $default_error) : $errors?->{'EDESC'}, ErrorCodes::DEFAULT_ERROR->value);
+            $this->setError((string) (is_array($errors) ? (count($errors) > 0 ? $errors[1]?->EDESC ?? $default_error : $default_error) : $errors?->{'EDESC'}, ErrorCodes::DEFAULT_ERROR->value));
             return false;
         }
         return $response->FCUBS_BODY;
