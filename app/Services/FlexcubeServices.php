@@ -73,14 +73,14 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
         $request = [
             'XREF' => $this->GenerateReference($product),
             'PRD' => $product,
-            'BRN' => $origin['branch'] == null ? substr($origin['account'], 0, 3) : $origin['branch'],
-            'TXNBRN' => $origin['branch'] == null ? substr($origin['account'], 0, 3) : $origin['branch'],
+            'BRN' => !isset($origin['branch']) ? substr($origin['account'], 0, 3) : $origin['branch'],
+            'TXNBRN' => !isset($origin['branch']) ? substr($origin['account'], 0, 3) : $origin['branch'],
             'TXNACC' => $origin['account'],
             'TXNCCY' => $origin['ccy'],
             'TXNAMT' => $amount,
         ];
         if ($offset) {
-            $request['OFFSETBRN'] = $offset['offset_branch'];
+            $request['OFFSETBRN'] = !isset($offset['offset_branch']) ? substr($offset['offset_account'], 0, 3) : $offset['offset_branch'];
             $request['OFFSETACC'] = $offset['offset_account'];
             $request['OFFSETCCY'] = $offset['offset_ccy'];
         }
