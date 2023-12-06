@@ -2,6 +2,7 @@
 
 namespace Noorfarooqy\Flexcube\Services;
 
+use Illuminate\Support\Facades\Log;
 use Noorfarooqy\NoorAuth\Services\NoorServices;
 
 class FlexcubeServices extends NoorServices implements CoreBankingContract
@@ -10,6 +11,7 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
     use HasFlexcubeBankingSystem;
     public function AccountDetails($account, $branch = null)
     {
+        Log::info($account);
         return $this->AccountDetails([
             'Cust-Account-IO' => [
                 'BRN' => $branch == null ? substr($account, 0, 3) : $branch,
