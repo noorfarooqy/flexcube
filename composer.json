@@ -3,7 +3,7 @@
     "description": "Flexcube Integration with Laravel",
     "type": "library",
     "require": {
-        "laravel/laravel": "^10.2",
+        "laravel/framework": "^10.0",
         "noorfarooqy/noorauth": "^1.0",
         "artisaninweb/laravel-soap": "0.3.0.10"
     },

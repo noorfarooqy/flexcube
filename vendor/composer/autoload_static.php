@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit96e09dc58625571d78f8ca014cc1c445
+class ComposerStaticInitfa6d3c6f2d6168424e2dec07620d89b4
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -105,6 +105,8 @@ class ComposerStaticInit96e09dc58625571d78f8ca014cc1c445
             'Noorfarooqy\\NoorAuth\\Interfaces\\' => 32,
             'Noorfarooqy\\NoorAuth\\Http\\Controllers\\' => 38,
             'Noorfarooqy\\NoorAuth\\' => 21,
+            'Noorfarooqy\\Flexcube\\Services\\' => 30,
+            'Noorfarooqy\\Flexcube\\Helpers\\' => 29,
             'Noorfarooqy\\Flexcube\\' => 21,
         ),
         'M' => 
@@ -324,8 +326,8 @@ class ComposerStaticInit96e09dc58625571d78f8ca014cc1c445
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -378,6 +380,14 @@ class ComposerStaticInit96e09dc58625571d78f8ca014cc1c445
         'Noorfarooqy\\NoorAuth\\' => 
         array (
             0 => __DIR__ . '/..' . '/noorfarooqy/noorauth/src',
+        ),
+        'Noorfarooqy\\Flexcube\\Services\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Services',
+        ),
+        'Noorfarooqy\\Flexcube\\Helpers\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Helpers',
         ),
         'Noorfarooqy\\Flexcube\\' => 
         array (
@@ -616,10 +626,10 @@ class ComposerStaticInit96e09dc58625571d78f8ca014cc1c445
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit96e09dc58625571d78f8ca014cc1c445::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit96e09dc58625571d78f8ca014cc1c445::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit96e09dc58625571d78f8ca014cc1c445::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit96e09dc58625571d78f8ca014cc1c445::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitfa6d3c6f2d6168424e2dec07620d89b4::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitfa6d3c6f2d6168424e2dec07620d89b4::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitfa6d3c6f2d6168424e2dec07620d89b4::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitfa6d3c6f2d6168424e2dec07620d89b4::$classMap;
 
         }, null, ClassLoader::class);
     }

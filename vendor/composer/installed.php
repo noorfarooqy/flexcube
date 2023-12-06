@@ -3,7 +3,7 @@
         'name' => 'noorfarooqy/flexcube',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '5ee025e048a55498bfdc9fae0c8ae5d31e985ff4',
+        'reference' => '096e9af6b83bd4c65ecee5fdcb8148e9a7dd68fd',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -523,7 +523,7 @@
         'noorfarooqy/flexcube' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '5ee025e048a55498bfdc9fae0c8ae5d31e985ff4',
+            'reference' => '096e9af6b83bd4c65ecee5fdcb8148e9a7dd68fd',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -676,8 +676,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '3.0.0',
-                1 => '1.0|2.0|3.0',
+                0 => '1.0|2.0|3.0',
+                1 => '3.0.0',
             ),
         ),
         'psr/simple-cache' => array(
