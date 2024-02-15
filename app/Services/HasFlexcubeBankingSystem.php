@@ -126,6 +126,62 @@ trait HasFlexcubeBankingSystem
         }
         return false;
     }
+    public function QueryBlocks($request_body)
+    {
+
+        $this->user_id = 'SYSTEM';
+        $service = 'FCUBSCustomerService';
+        $operation = 'QueryBlk';
+        $operation_query = 'FCUBSCustomerService.QueryBlkIO';
+        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
+        if ($response) {
+            return $response;
+        }
+        return false;
+    }
+    public function QueryAmtBlk($request_body, $branch)
+    {
+
+        $this->user_id = 'SYSTEM';
+        $service = 'FCUBSCustomerService';
+        $operation = 'QueryAmtBlk';
+        $operation_query = 'FCUBSCustomerService.QueryAmtBlkIO';
+        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query, $branch);
+        if ($response) {
+            return $response;
+        }
+        return false;
+    }
+
+
+
+    public function BlockAmount($request_body)
+    {
+
+        // $this->user_id = 'SYSTEM';
+        $service = 'FCUBSCustomerService';
+        $operation = 'CreateAmtBlk';
+        $operation_query = 'FCUBSCustomerService.CreateAmtBlkIO';
+        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
+        if ($response) {
+            return $response;
+        }
+        return false;
+    }
+
+    public function UnBlockAmount($request_body)
+    {
+
+        // $this->user_id = 'SYSTEM';
+        $service = 'FCUBSCustomerService';
+        $operation = 'CloseAmtBlk';
+        $operation_query = 'FCUBSCustomerService.CloseAmtBlkIO';
+        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
+        if ($response) {
+            return $response;
+        }
+        return false;
+    }
     public function SendCoreBankingRequest($request_body, $service, $operation, $operation_query)
     {
         $soapServices = new SoapServices();

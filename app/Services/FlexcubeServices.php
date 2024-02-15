@@ -145,6 +145,53 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
         ]);
     }
 
+    public function AccountBlockAmount($account, $branch, $amount, $hp_code, $ref, $expires_at = now()->addDay())
+    {
+        return $this->BlockAmount([
+            'Amount-Blocks-IO' => [
+                'ACC' => $account,
+                'AMTBLKNO' => $ref,
+                'AMT' => $amount,
+                'EXPDATE' => $expires_at,
+                'ABLKTYPE' => 'F',
+                'REFERENCE_NO' => $ref,
+                'HPCODE' => 'MPESA',
+                'EFFDATE' => now(),
+                'HOLDDESC' => 'Hold for ' . $hp_code . ' purpose ref: ' . $ref,
+                "REMARKS" => 'Hold for ' . $hp_code . ' purpose ref: ' . $ref,
+                'BRANCH' => $branch
+
+            ],
+        ]);
+    }
+    public function AccountUnblockAmount($ref)
+    {
+        return $this->UnBlockAmount([
+            'Amount-Blocks-IO' => [
+                'AMTBLKNO' => $ref,
+            ],
+        ]);
+    }
+
+    public function QueryAmountBlock($account_number, $block_no)
+    {
+        return $this->QueryAmtBlk([
+            'Amount-Blocks-IO' => [
+                'AMTBLKNO' => $block_no,
+            ]
+        ],substr($account_number, 0, 3) );
+    }
+
+    public function GetAccountAmountBlocks($account)
+    {
+        return $this->QueryBlocks([
+            'Account-IO' => [
+                'BRANCH' => substr($account, 0, 3),
+                'ACCOUNT' => $account
+            ]
+        ]);
+    }
+
     public function GenerateReference($prefix = 'LFC')
     {
         $transactions = gmdate('YmdHis', time());
