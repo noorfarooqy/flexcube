@@ -145,7 +145,7 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
         ]);
     }
 
-    public function AccountBlockAmount($account, $branch, $amount, $hp_code, $ref, $expires_at = now()->addDay())
+    public function AccountBlockAmount($account, $branch, $amount, $hp_code, $ref, $expires_at = null)
     {
         return $this->BlockAmount([
             'Amount-Blocks-IO' => [
@@ -179,7 +179,7 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
             'Amount-Blocks-IO' => [
                 'AMTBLKNO' => $block_no,
             ]
-        ],substr($account_number, 0, 3) );
+        ], substr($account_number, 0, 3));
     }
 
     public function GetAccountAmountBlocks($account)
