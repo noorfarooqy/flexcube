@@ -133,7 +133,7 @@ trait HasFlexcubeBankingSystem
         $service = 'FCUBSCustomerService';
         $operation = 'QueryBlk';
         $operation_query = 'FCUBSCustomerService.QueryBlkIO';
-        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
+        $response = $this->SendCoreBankingRequest($request_body, $service, $operation, $operation_query);
         if ($response) {
             return $response;
         }
@@ -146,7 +146,7 @@ trait HasFlexcubeBankingSystem
         $service = 'FCUBSCustomerService';
         $operation = 'QueryAmtBlk';
         $operation_query = 'FCUBSCustomerService.QueryAmtBlkIO';
-        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query, $branch);
+        $response = $this->SendCoreBankingRequest($request_body, $service, $operation, $operation_query, $branch);
         if ($response) {
             return $response;
         }
@@ -162,7 +162,7 @@ trait HasFlexcubeBankingSystem
         $service = 'FCUBSCustomerService';
         $operation = 'CreateAmtBlk';
         $operation_query = 'FCUBSCustomerService.CreateAmtBlkIO';
-        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
+        $response = $this->SendCoreBankingRequest($request_body, $service, $operation, $operation_query);
         if ($response) {
             return $response;
         }
@@ -176,7 +176,7 @@ trait HasFlexcubeBankingSystem
         $service = 'FCUBSCustomerService';
         $operation = 'CloseAmtBlk';
         $operation_query = 'FCUBSCustomerService.CloseAmtBlkIO';
-        $response = $this->QueryCbs($request_body, $service, $operation, $operation_query);
+        $response = $this->SendCoreBankingRequest($request_body, $service, $operation, $operation_query);
         if ($response) {
             return $response;
         }
