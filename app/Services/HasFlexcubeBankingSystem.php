@@ -148,7 +148,7 @@ trait HasFlexcubeBankingSystem
         $operation_query = 'FCUBSCustomerService.QueryAmtBlkIO';
         $response = $this->SendCoreBankingRequest($request_body, $service, $operation, $operation_query, $branch);
         if ($response) {
-            return $response;
+            return $response?->{'Amount-Blocks-Full'};
         }
         return false;
     }
@@ -182,11 +182,11 @@ trait HasFlexcubeBankingSystem
         }
         return false;
     }
-    public function SendCoreBankingRequest($request_body, $service, $operation, $operation_query)
+    public function SendCoreBankingRequest($request_body, $service, $operation, $operation_query, $branch = null)
     {
         $soapServices = new SoapServices();
         $soapServices->SetBody($request_body);
-        $branch = config('flexcube.branch');
+        $branch = $branch ?? config('flexcube.branch');
         $source = config('flexcube.source');
         $ubscamp = config('flexcube.ubscamp');
         $userid = $this->user_id;
@@ -213,6 +213,7 @@ trait HasFlexcubeBankingSystem
 
         $failed = $response?->FCUBS_HEADER?->MSGSTAT != "SUCCESS";
         if (env('APP_DEBUG')) {
+            Log::info('----flexcube response----');
             Log::info(json_encode($response));
         }
 

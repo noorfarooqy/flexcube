@@ -71,7 +71,7 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
     public function AccountTransaction($amount, $product, $origin, $offset = null)
     {
         $request = [
-            'XREF' => $this->GenerateReference($product),
+            'XREF' => $origin['xref'],
             'PRD' => $product,
             'BRN' => !isset($origin['branch']) ? substr($origin['account'], 0, 3) : $origin['branch'],
             'TXNBRN' => !isset($origin['branch']) ? substr($origin['account'], 0, 3) : $origin['branch'],
@@ -85,9 +85,12 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
             $request['OFFSETCCY'] = $offset['offset_ccy'];
         }
         $request['OFFSETAMT'] = $amount;
-        return $this->CreateTransaction([
+        $response =  $this->CreateTransaction([
             'Transaction-Details' => $request,
         ]);
+        Log::info('--flexcube response--gateway--');
+        Log::info(json_encode($response));
+        return $response;
     }
     public function AccountQueryTransaction($reference)
     {
@@ -145,7 +148,7 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
         ]);
     }
 
-    public function AccountBlockAmount($account, $branch, $amount, $hp_code, $ref, $expires_at = null)
+    public function AccountBlockAmount($account, $branch, $amount, $hp_code, $ref, $expires_at =null)
     {
         return $this->BlockAmount([
             'Amount-Blocks-IO' => [
