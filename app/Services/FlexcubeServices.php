@@ -83,8 +83,8 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
             $request['OFFSETBRN'] = !isset($offset['offset_branch']) ? substr($offset['offset_account'], 0, 3) : $offset['offset_branch'];
             $request['OFFSETACC'] = $offset['offset_account'];
             $request['OFFSETCCY'] = $offset['offset_ccy'];
+            $request['OFFSETAMT'] = $amount;
         }
-        $request['OFFSETAMT'] = $amount;
         $response =  $this->CreateTransaction([
             'Transaction-Details' => $request,
         ]);
@@ -148,7 +148,7 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
         ]);
     }
 
-    public function AccountBlockAmount($account, $branch, $amount, $hp_code, $ref, $expires_at =null)
+    public function AccountBlockAmount($account, $branch, $amount, $hp_code, $ref, $expires_at = null)
     {
         return $this->BlockAmount([
             'Amount-Blocks-IO' => [
