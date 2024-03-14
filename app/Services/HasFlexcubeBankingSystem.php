@@ -36,10 +36,7 @@ trait HasFlexcubeBankingSystem
         $operation = 'QueryAccBal';
         $operation_query = 'FCUBSAccService.QueryAccBalIO';
         $response = $this->SendCoreBankingRequest($request_body, $service, $operation, $operation_query);
-        if ($response?->{'FCUBS_ERROR_RESP'} != null) {
-            $this->setError($response?->{'FCUBS_ERROR_RESP'}?->{'ERROR'}?->{'EDESC'});
-            return false;
-        }
+
         if ($response) {
             return $response->{'ACC-Balance'}?->{'ACC_BAL'};
         }
