@@ -192,7 +192,7 @@ trait HasFlexcubeBankingSystem
         $operation_query = 'FCUBSRTService.QueryTransactionIO';
         $response = $this->SendCoreBankingRequest($request_body, $service, $operation, $operation_query);
         if ($response) {
-            return $response;
+            return $response?->{'Transaction-Details-Full'};
         }
         return false;
     }
