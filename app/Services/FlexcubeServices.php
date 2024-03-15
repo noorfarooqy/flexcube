@@ -94,7 +94,7 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
     }
     public function AccountQueryTransaction($reference)
     {
-        return $this->QueryAccountTransactions([
+        return $this->QueryTransactionDetails([
             'Transaction-Details-IO' => [
                 'FCCREF' => $reference
             ]

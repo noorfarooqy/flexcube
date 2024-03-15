@@ -183,6 +183,19 @@ trait HasFlexcubeBankingSystem
         }
         return false;
     }
+    public function QueryTransactionDetails($request_body)
+    {
+
+        // $this->user_id = 'SYSTEM';
+        $service = 'FCUBSRTService';
+        $operation = 'QueryTransaction';
+        $operation_query = 'FCUBSRTService.QueryTransactionIO';
+        $response = $this->SendCoreBankingRequest($request_body, $service, $operation, $operation_query);
+        if ($response) {
+            return $response;
+        }
+        return false;
+    }
     public function SendCoreBankingRequest($request_body, $service, $operation, $operation_query, $branch = null)
     {
         $soapServices = new SoapServices();
