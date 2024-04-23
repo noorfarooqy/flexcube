@@ -17,7 +17,7 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
                 'BRN' => $branch == null ? substr($account, 0, 3) : $branch,
                 'ACC' => $account,
             ],
-        ]);
+        ], $branch == null ? substr($account, 0, 3) : $branch);
     }
     public function AccountIsDormant($account, $branch = null)
     {

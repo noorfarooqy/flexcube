@@ -17,13 +17,13 @@ trait HasFlexcubeBankingSystem
     {
         $this->user_id  = config('flexcube.user_id');
     }
-    public function QueryIACustAccount($request_body)
+    public function QueryIACustAccount($request_body, $branch='000')
     {
 
         $service = 'FCUBSIAService';
         $operation = 'QueryIACustAcc';
         $operation_query = 'FCUBSIAService.QueryIACustAccIO';
-        $response = $this->SendCoreBankingRequest($request_body, $service, $operation, $operation_query);
+        $response = $this->SendCoreBankingRequest($request_body, $service, $operation, $operation_query, $branch);
         if ($response) {
             return $response->{'Cust-Account-Full'};
         }
