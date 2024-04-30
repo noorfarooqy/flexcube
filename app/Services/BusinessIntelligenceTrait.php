@@ -17,6 +17,7 @@ trait BusinessIntelligenceTrait
                 'reportRequest' => [
                     'attributeFormat' => $format,
                     'byPassCache' => 'Y',
+                    'flattenXML' => 'Y',
                     'parameterNameValues' => [
                         'item' => [
                             [
