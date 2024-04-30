@@ -87,7 +87,10 @@ trait BusinessIntelligenceTrait
         Log::info(json_encode($request_body));
         Log::info($operation);
         Log::info($service);
-        $response = $soapWrapper->call($operation, $request_body);
+        $response = $soapWrapper->call($operation, [
+            'Header' => null,
+            'Body' => $request_body,
+        ]);
         Log::info(json_encode($response));
         // Log::info(json_encode($soapWrapper->client->)
         $failed = $response?->Fault ?? false;
