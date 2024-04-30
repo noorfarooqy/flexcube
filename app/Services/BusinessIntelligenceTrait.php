@@ -22,7 +22,7 @@ trait BusinessIntelligenceTrait
                         'multiValuesAllowed' => 'True',
                         'item' => [
                             [
-                                'multiValuesAllowed' => 'false',
+                                'multiValuesAllowed' => 'True',
                                 'refreshParamOnChange' => 'true',
                                 'selectAll' => 'true',
                                 'useNullForAll' => 'false',
@@ -33,7 +33,7 @@ trait BusinessIntelligenceTrait
                                 ],
                             ],
                             [
-                                'multiValuesAllowed' => 'false',
+                                'multiValuesAllowed' => 'True',
                                 'refreshParamOnChange' => 'true',
                                 'selectAll' => 'true',
                                 'useNullForAll' => 'false',
