@@ -23,9 +23,9 @@ trait BusinessIntelligenceTrait
                             [
                                 'multiValuesAllowed' => false,
                                 'refreshParamOnChange' => true,
-                                'selectAll' => 'true',
-                                'useNullForAll' => 'false',
-                                'templateParam' => 'false',
+                                'selectAll' => true,
+                                'useNullForAll' => false,
+                                'templateParam' => false,
                                 'name' => 'Account',
                                 'value' => [
                                     'item' => $account
@@ -34,7 +34,7 @@ trait BusinessIntelligenceTrait
                             [
                                 'multiValuesAllowed' => false,
                                 'refreshParamOnChange' => true,
-                                'selectAll' => 'true',
+                                'selectAll' => true,
                                 'useNullForAll' => 'false',
                                 'templateParam' => 'false',
                                 'name' => 'From_Date',
@@ -43,6 +43,11 @@ trait BusinessIntelligenceTrait
                                 ],
                             ],
                             [
+                                'multiValuesAllowed' => false,
+                                'refreshParamOnChange' => true,
+                                'selectAll' => true,
+                                'useNullForAll' => false,
+                                'templateParam' => false,
                                 'name' => 'To_Date',
                                 'value' => [
                                     'item' => $to_date
