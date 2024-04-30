@@ -19,12 +19,10 @@ trait BusinessIntelligenceTrait
                     'byPassCache' => 'Y',
                     'flattenXML' => 'Y',
                     'parameterNameValues' => [
-
-
                         'item' => [
                             [
-                                'multiValuesAllowed' => 'N',
-                                'refreshParamOnChange' => 'Y',
+                                'multiValuesAllowed' => false,
+                                'refreshParamOnChange' => true,
                                 'selectAll' => true,
                                 'useNullForAll' => false,
                                 'templateParam' => false,
@@ -34,8 +32,8 @@ trait BusinessIntelligenceTrait
                                 ],
                             ],
                             [
-                                'multiValuesAllowed' => 'N',
-                                'refreshParamOnChange' => 'Y',
+                                'multiValuesAllowed' => false,
+                                'refreshParamOnChange' => true,
                                 'selectAll' => true,
                                 'useNullForAll' => false,
                                 'templateParam' => false,
@@ -76,6 +74,7 @@ trait BusinessIntelligenceTrait
         });
         $operation = $service . '.runReport';
         $response = $soapWrapper->call($operation, $request_body);
+        Log::info($soapWrapper->getLatestRequest());
         $failed = $response?->Fault;
         if ($failed) {
             Log::channel(config('flexcube.log_channel'))->error($response);
