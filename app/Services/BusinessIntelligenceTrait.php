@@ -19,25 +19,25 @@ trait BusinessIntelligenceTrait
                     'byPassCache' => 'Y',
                     'flattenXML' => 'Y',
                     'parameterNameValues' => [
-                        'multiValuesAllowed' => true,
+                        'multiValuesAllowed' => 'True',
                         'item' => [
                             [
-                                'multiValuesAllowed' => false,
-                                'refreshParamOnChange' => true,
-                                'selectAll' => true,
-                                'useNullForAll' => false,
-                                'templateParam' => false,
+                                'multiValuesAllowed' => 'false',
+                                'refreshParamOnChange' => 'true',
+                                'selectAll' => 'true',
+                                'useNullForAll' => 'false',
+                                'templateParam' => 'false',
                                 'name' => 'Account',
                                 'value' => [
                                     'item' => $account
                                 ],
                             ],
                             [
-                                'multiValuesAllowed' => false,
-                                'refreshParamOnChange' => true,
-                                'selectAll' => true,
-                                'useNullForAll' => false,
-                                'templateParam' => false,
+                                'multiValuesAllowed' => 'false',
+                                'refreshParamOnChange' => 'true',
+                                'selectAll' => 'true',
+                                'useNullForAll' => 'false',
+                                'templateParam' => 'false',
                                 'name' => 'From_Date',
                                 'value' => [
                                     'item' => $from_date
