@@ -55,7 +55,13 @@ trait BusinessIntelligenceTrait
                             ],
                         ],
                     ],
+                    'reportAbsolutePath' => config('flexcube.bi_reports.services.public_report_path'),
+                    // 'sizeOfDataChunkDownload' => 'cid:974432364637',
+                    'sizeOfDataChunkDownload' => "-1",
+
                 ],
+                'userID' => config('flexcube.bi_reports.user_id'),
+                'password' => config('flexcube.bi_reports.password'),
             ],
         ];
         $response = $this->RunReport($request_body);
