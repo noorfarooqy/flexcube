@@ -24,6 +24,7 @@ trait BusinessIntelligenceTrait
                         'item' => [
                             [
                                 'multiValuesAllowed' => 'N',
+                                'refreshParamOnChange' => 'Y',
                                 'name' => 'Account',
                                 'value' => [
                                     'item' => $account
@@ -31,6 +32,7 @@ trait BusinessIntelligenceTrait
                             ],
                             [
                                 'multiValuesAllowed' => 'N',
+                                'refreshParamOnChange' => 'Y',
                                 'name' => 'From_Date',
                                 'value' => [
                                     'item' => $from_date
