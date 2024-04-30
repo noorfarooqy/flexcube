@@ -84,8 +84,12 @@ trait BusinessIntelligenceTrait
                 );
         });
         $operation = $service . '.runReport';
+        Log::info(json_encode($request_body));
+        Log::info($operation);
+        Log::info($service);
         $response = $soapWrapper->call($operation, $request_body);
         Log::info(json_encode($response));
+        // Log::info(json_encode($soapWrapper->client->)
         $failed = $response?->Fault ?? false;
         if (!$failed) {
             Log::channel(config('flexcube.log_channel'))->error(json_encode($response));
