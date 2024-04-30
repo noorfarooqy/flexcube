@@ -74,7 +74,7 @@ trait BusinessIntelligenceTrait
         });
         $operation = $service . '.runReport';
         $response = $soapWrapper->call($operation, $request_body);
-        Log::info($soapWrapper->getLatestRequest());
+        // Log::info($soapWrapper->getLatestRequest());
         $failed = $response?->Fault;
         if ($failed) {
             Log::channel(config('flexcube.log_channel'))->error($response);
