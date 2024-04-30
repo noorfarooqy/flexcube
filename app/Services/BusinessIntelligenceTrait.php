@@ -56,6 +56,7 @@ trait BusinessIntelligenceTrait
         ];
         $response = $this->RunReport($request_body);
         return $response;
+
     }
     public function RunReport($request_body, $service = null)
     {
