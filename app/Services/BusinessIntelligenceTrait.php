@@ -27,8 +27,8 @@ trait BusinessIntelligenceTrait
                                 'refreshParamOnChange' => 'Y',
                                 'selectAll' => true,
                                 'useNullForAll' => false,
-                                'name' => 'Account',
                                 'templateParam' => false,
+                                'name' => 'Account',
                                 'value' => [
                                     'item' => $account
                                 ],
@@ -38,6 +38,7 @@ trait BusinessIntelligenceTrait
                                 'refreshParamOnChange' => 'Y',
                                 'selectAll' => true,
                                 'useNullForAll' => false,
+                                'templateParam' => false,
                                 'name' => 'From_Date',
                                 'value' => [
                                     'item' => $from_date
