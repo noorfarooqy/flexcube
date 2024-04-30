@@ -20,15 +20,17 @@ trait BusinessIntelligenceTrait
                     'flattenXML' => 'Y',
                     'parameterNameValues' => [
 
-                        'multiValuesAllowed' => 'N',
+
                         'item' => [
                             [
+                                'multiValuesAllowed' => 'N',
                                 'name' => 'Account',
                                 'value' => [
                                     'item' => $account
                                 ],
                             ],
                             [
+                                'multiValuesAllowed' => 'N',
                                 'name' => 'From_Date',
                                 'value' => [
                                     'item' => $from_date
