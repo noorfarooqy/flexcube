@@ -19,6 +19,8 @@ trait BusinessIntelligenceTrait
                     'byPassCache' => 'Y',
                     'flattenXML' => 'Y',
                     'parameterNameValues' => [
+
+                        'multiValuesAllowed' => 'N',
                         'item' => [
                             [
                                 'name' => 'Account',
