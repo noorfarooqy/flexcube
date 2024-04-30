@@ -88,7 +88,6 @@ trait BusinessIntelligenceTrait
         Log::info($operation);
         Log::info($service);
         $response = $soapWrapper->call($operation, [
-            'Header' => null,
             'Body' => $request_body,
         ]);
         Log::info(json_encode($response));
