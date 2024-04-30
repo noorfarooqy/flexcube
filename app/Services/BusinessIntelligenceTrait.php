@@ -41,18 +41,7 @@ trait BusinessIntelligenceTrait
                                 'value' => [
                                     'item' => $from_date
                                 ],
-                            ],
-                            [
-                                'multiValuesAllowed' => false,
-                                'refreshParamOnChange' => true,
-                                'selectAll' => true,
-                                'useNullForAll' => false,
-                                'templateParam' => false,
-                                'name' => 'To_Date',
-                                'value' => [
-                                    'item' => $to_date
-                                ],
-                            ],
+                            ]
                         ],
                     ],
                     'reportAbsolutePath' => config('flexcube.bi_reports.services.public_report_path'),
