@@ -16,6 +16,7 @@ trait BusinessIntelligenceTrait
             'runReport' => [
                 'reportRequest' => [
                     'attributeFormat' => $format,
+                    'byPassCache' => 'Y',
                     'parameterNameValues' => [
                         'item' => [
                             [
