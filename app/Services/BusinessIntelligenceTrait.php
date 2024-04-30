@@ -89,7 +89,8 @@ trait BusinessIntelligenceTrait
         $failed = $response?->Fault ?? false;
         if (!$failed) {
             Log::channel(config('flexcube.log_channel'))->error(json_encode($response));
-            $this->setError(json_encode($response?->Fault?->faultstring) ?? 'Request to the CBS Failed. Please contact admin for assistance', $response?->Fault?->faultcode);
+            $default_message = 'Request to the CBS Failed. Please contact admin for assistance';
+            $this->setError(json_encode($response?->Fault?->faultstring ?? '--- ' . $default_message) ?? $default_message);
             return false;
         }
         return $response;
