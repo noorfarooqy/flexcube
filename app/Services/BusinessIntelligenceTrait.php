@@ -16,8 +16,8 @@ trait BusinessIntelligenceTrait
             'runReport' => [
                 'reportRequest' => [
                     'attributeFormat' => $format,
-                    'byPassCache' => 'Y',
-                    'flattenXML' => 'Y',
+                    'byPassCache' => true,
+                    'flattenXML' => true,
                     'parameterNameValues' => [
                         'item' => [
                             [
@@ -35,8 +35,8 @@ trait BusinessIntelligenceTrait
                                 'multiValuesAllowed' => false,
                                 'refreshParamOnChange' => true,
                                 'selectAll' => true,
-                                'useNullForAll' => 'false',
-                                'templateParam' => 'false',
+                                'useNullForAll' => false,
+                                'templateParam' => false,
                                 'name' => 'From_Date',
                                 'value' => [
                                     'item' => $from_date
