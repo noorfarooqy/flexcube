@@ -16,6 +16,7 @@ return [
         'services' => [
             'public_report' => env('FCC_BI_REPORTS_PUBLIC_REPORT', 'PublicReportService'),
             'public_report_path' => env('FCC_BI_REPORTS_PUBLIC_REPORT_PATH', '/Internal Reports/Reports/Customer Account Statement.xdo'),
+            'customers_report_path' => env('FCC_BI_REPORTS_CUSTOMERS_REPORT_PATH', '/Internal Reports/Reports/Static Data.xdo')
         ],
     ],
     'log_channel' => env('FCC_LOG_CHANNEL', 'daily'),

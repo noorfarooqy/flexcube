@@ -3,20 +3,21 @@
 namespace Noorfarooqy\Flexcube\Services;
 
 use Artisaninweb\SoapWrapper\SoapWrapper;
-use DOMDocument;
-use DOMElement;
 use Illuminate\Support\Facades\Http;
 use Noorfarooqy\NoorAuth\Traits\ResponseHandler;
 use Illuminate\Support\Facades\Log;
-use SimpleXMLElement;
+use Noorfarooqy\NoorAuth\Traits\Helper;
 
 trait BusinessIntelligenceTrait
 {
     use ResponseHandler;
+    use Helper;
 
     public function BankStatementReport($account, $from_date, $to_date, $format = 'pdf')
     {
         $absolute_path = config('flexcube.bi_reports.services.public_report_path');
+        $user = config('flexcube.bi_reports.user_id');
+        $password = config('flexcube.bi_reports.password');
         $payload = "
         <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'
             xmlns:pub='http://xmlns.oracle.com/oxp/service/PublicReportService'>
@@ -51,8 +52,8 @@ trait BusinessIntelligenceTrait
                         <pub:reportAbsolutePath>$absolute_path</pub:reportAbsolutePath>
                         <pub:sizeOfDataChunkDownload>-1</pub:sizeOfDataChunkDownload>
                     </pub:reportRequest>
-                    <pub:userID>weblogic</pub:userID>
-                    <pub:password>weblogic123</pub:password>
+                    <pub:userID>$user</pub:userID>
+                    <pub:password>$password</pub:password>
                 </pub:runReport>
             </soapenv:Body>
         </soapenv:Envelope>";
@@ -61,27 +62,79 @@ trait BusinessIntelligenceTrait
             'Content-Type' => 'application/xml',
             'SOAPAction' => 'http://schemas.xmlsoap.org/soap/envelope/'
         ])->withBody($payload)->post(config('flexcube.bi_reports.endpoit') . config('flexcube.bi_reports.services.public_report'));
-        // Log::info('resonpose--- ' . json_encode($response->body()));
         $start = strpos($response->body(), '<soapenv:Envelope');
         $end = strpos($response->body(), '</soapenv:Envelope>');
-        // Log::info("start at $start and end at $end");
         $xml_body = substr($response->body(), $start, $end);
-
-        // $xml_body = str_replace('xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"', ' ', $xml_body);
-
         $xml_body = str_replace('<runReportResponse xmlns="http://xmlns.oracle.com/oxp/service/PublicReportService">', '<runReportResponse>', $xml_body);
-
-        // Log::info($xml_body);
         $soap = simplexml_load_string($xml_body);
         $response_children = $soap->children('http://schemas.xmlsoap.org/soap/envelope/')->Body;
-        // Log::info($response_children);
+        // $this->debugLog($response_children);
         if ($response_children->children('soapenv', true)?->Fault->children()?->faultcode != null) {
             $this->setError(env('APP_DEBUG') ? $response_children->children('soapenv', true)?->Fault->children()->faultstring : 'Request to the CBS Failed. Please contact admin for assistance');
-            Log::info('error is here --' . $response_children->children('soapenv', true)?->Fault->children()->faultstring);
+            $this->debugLog('error is here --' . $response_children->children('soapenv', true)?->Fault->children()->faultstring);
             return false;
         }
         $response = $response_children->children()->runReportResponse;
         return $response;
+    }
+
+    public function GetCustomersList($from_date, $to_date)
+    {
+
+        $absolute_path = config('flexcube.bi_reports.services.customers_report_path');
+        $user = config('flexcube.bi_reports.user_id');
+        $password = config('flexcube.bi_reports.password');
+        $payload = "
+        <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'
+            xmlns:pub='http://xmlns.oracle.com/oxp/service/PublicReportService'>
+            <soapenv:Header />
+            <soapenv:Body>
+                <pub:runReport>
+                    <pub:reportRequest>
+                        <pub:attributeFormat>csv</pub:attributeFormat>
+                        <pub:parameterNameValues>
+                            <pub:item>
+                                <pub:name>p_from_date</pub:name>
+                                <pub:values>
+                                    <pub:item>$from_date</pub:item>
+                                </pub:values>
+                            </pub:item>
+                            <pub:item>
+                                <pub:name>p_to_date</pub:name>
+                                <pub:values>
+                                    <pub:item>$to_date</pub:item>
+                                </pub:values>
+                            </pub:item>
+                        </pub:parameterNameValues>
+                        <pub:reportAbsolutePath>/Internal Reports/Reports/Static Data.xdo</pub:reportAbsolutePath>
+                        <pub:sizeOfDataChunkDownload>-1</pub:sizeOfDataChunkDownload>
+                    </pub:reportRequest>
+                    <pub:userID>$user</pub:userID>
+                    <pub:password>$password</pub:password>
+                </pub:runReport>
+            </soapenv:Body>
+        </soapenv:Envelope>
+        ";
+
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/xml',
+            'SOAPAction' => 'http://schemas.xmlsoap.org/soap/envelope/'
+        ])->withBody($payload)->post(config('flexcube.bi_reports.endpoit') . config('flexcube.bi_reports.services.public_report'));
+        $start = strpos($response->body(), '<soapenv:Envelope');
+        $end = strpos($response->body(), '</soapenv:Envelope>');
+        $xml_body = substr($response->body(), $start, $end);
+        $xml_body = str_replace('<runReportResponse xmlns="http://xmlns.oracle.com/oxp/service/PublicReportService">', '<runReportResponse>', $xml_body);
+        $soap = simplexml_load_string($xml_body);
+        $response_children = $soap->children('http://schemas.xmlsoap.org/soap/envelope/')->Body;
+        // $this->debugLog($response_children);
+        if ($response_children->children('soapenv', true)?->Fault->children()?->faultcode != null) {
+            $this->setError(env('APP_DEBUG') ? $response_children->children('soapenv', true)?->Fault->children()->faultstring : 'Request to the CBS Failed. Please contact admin for assistance');
+            $this->debugLog('error in customers is here --' . $response_children->children('soapenv', true)?->Fault->children()->faultstring);
+            return false;
+        }
+        $response = $response_children->children()->runReportResponse;
+        return $response;
+
     }
     public function RunReport($request_body, $service = null)
     {
@@ -99,12 +152,12 @@ trait BusinessIntelligenceTrait
                 );
         });
         $operation = 'PublicReportService.runReport';
-        Log::info(json_encode($request_body));
-        Log::info($operation);
-        Log::info($service);
+        $this->debugLog(json_encode($request_body));
+        $this->debugLog($operation);
+        $this->debugLog($service);
         $response = $soapWrapper->call($operation, $request_body);
-        Log::info('Response --- ' . json_encode($response));
-        // Log::info(json_encode($soapWrapper->client->)
+        $this->debugLog('Response --- ' . json_encode($response));
+        // $this->debugLog(json_encode($soapWrapper->client->)
         $failed = $response?->Fault ?? false;
         if (!$failed) {
             Log::channel(config('flexcube.log_channel'))->error(json_encode($response));
