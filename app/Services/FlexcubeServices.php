@@ -22,7 +22,8 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
     public function AccountIsDormant($account, $branch = null)
     {
         $account_details = $this->AccountDetails($account, $branch);
-        if (!$account_details) return -1;
+        if (!$account_details)
+            return -1;
 
         return $account_details?->{'Summary'}?->{'DORM'} == 'Y';
     }
@@ -78,6 +79,7 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
             'TXNACC' => $origin['account'],
             'TXNCCY' => $origin['ccy'],
             'TXNAMT' => $amount,
+            'NARRATIVE' => !isset($origin['narrative']) ? $origin['narrative'] : $product . ' - ref: ' . $origin['xref'] . ' - a/c ' . $origin['account'],
         ];
         if ($offset) {
             $request['OFFSETBRN'] = !isset($offset['offset_branch']) ? substr($offset['offset_account'], 0, 3) : $offset['offset_branch'];
@@ -85,7 +87,7 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
             $request['OFFSETCCY'] = $offset['offset_ccy'];
             $request['OFFSETAMT'] = $amount;
         }
-        $response =  $this->CreateTransaction([
+        $response = $this->CreateTransaction([
             'Transaction-Details' => $request,
         ]);
         Log::info('--flexcube response--gateway--');
@@ -198,7 +200,7 @@ class FlexcubeServices extends NoorServices implements CoreBankingContract
     public function GenerateReference($prefix = 'LFC')
     {
         $transactions = gmdate('YmdHis', time());
-        $reference =  $prefix . (config('flexcube.reference_salt', 100000000) + $transactions);
+        $reference = $prefix . (config('flexcube.reference_salt', 100000000) + $transactions);
         return $reference;
     }
 }
